@@ -16,11 +16,28 @@ import java.util.concurrent.TimeUnit;
 
 import static io.appium.java_client.touch.WaitOptions.waitOptions;
 import static java.time.Duration.ofMillis;
-
-
 public class TestCorpCard {
+    public static final String CARD_SETTINGS = "kz.jysan.business.dev:id/settings";
+    private static final String SET_PIN_PATH = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[4]";
+    public static final String IIN = "970218050251";
+    public static final String PHONE_NUMBER = "7056375413";
+    public static final String INPUT_IIN = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText";
+    public static final String PASSWORD = "Strong2024!";
+    public static final String COMPANY_CHANGE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView";
+    public static final String CHOOSE_COMPANY = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.widget.TextView";
+    public static final String CARD_CONTAINER = "kz.jysan.business.dev:id/group_cards_compose_view";
+    public static final String OPEN_CARD = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[8]/android.widget.LinearLayout/android.widget.TextView[2]";
+    public static final String REQUITSITES = "kz.jysan.business.dev:id/details";
+    public static final String GET_REQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[3]/android.widget.Switch";
+    public static final String GET_ACCOUNT_RУQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.view.View";
+    public static final String SHARE_ACCOUNT_REQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[1]/android.widget.Button[2]";
+    public static final String KEY_CODE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]";
+    public static final String KEY_CODE_REPEAT = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]";
+
     public AndroidDriver<MobileElement> driver;
     public WebDriverWait wait;
+
+
 
     @BeforeMethod
     public void setup() throws MalformedURLException {
@@ -36,155 +53,126 @@ public class TestCorpCard {
         wait = new WebDriverWait(driver, 20);
     }
 
-
     @Test
-    public void CorpCardTest() throws InterruptedException {
+    public void CorpCardTest() {
+        firstAuthorizationWithSMS();
+        createPassCode();
+        showRequisites();
+        setPinCode();
+    }
 
+    private void showRequisites() {
+        loadingWaitTimeout();
+        driver.findElementByXPath(COMPANY_CHANGE).click();
+        loadingWaitTimeout();
+        driver.findElementByXPath(CHOOSE_COMPANY).click();
 
-//First authorization
+        for (int i = 0; i < 2; ++i) {
+            loadingWaitTimeout();
+            swipe();
+        }
 
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        loadingWaitTimeout();
+        driver.findElementById(CARD_CONTAINER).click();
 
-        MobileElement iin_click = (MobileElement) driver.findElementById("kz.jysan.business.dev:id/et_iin");
-        iin_click.click();
+        swipe();
 
-        MobileElement iin_input = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText");
-        iin_input.sendKeys("970218050251");
+        loadingWaitTimeout();
+        driver.findElementByXPath(OPEN_CARD).click();
 
-        MobileElement phoneNumber_click = (MobileElement) driver.findElementById("kz.jysan.business.dev:id/et_phone");
-        phoneNumber_click.click();
+        loadingWaitTimeout();
+        driver.findElementById(REQUITSITES).click();
 
-        MobileElement number_input = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.LinearLayout[2]/android.view.ViewGroup/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText");
-        number_input.sendKeys("7056375413");
+        loadingWaitTimeout();
+        driver.findElementByXPath(GET_REQUISITES).click();
 
-        MobileElement contininue_click = (MobileElement) driver.findElementById("kz.jysan.business.dev:id/button");
-        contininue_click.click();
+        loadingWaitTimeout();
+        driver.findElementByXPath(GET_ACCOUNT_RУQUISITES).click();
 
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        loadingWaitTimeout();
+        driver.findElementByXPath(SHARE_ACCOUNT_REQUISITES).click();
+
+        for (int i = 0; i < 2; ++i) {
+            loadingWaitTimeout();
+            driver.navigate().back();
+        }
+    }
+
+    private void firstAuthorizationWithSMS() {
+        loadingWaitTimeout();
+        driver.findElementById("kz.jysan.business.dev:id/et_iin").click();
+        driver.findElementByXPath(INPUT_IIN).sendKeys(IIN);
+        driver.findElementById("kz.jysan.business.dev:id/et_phone").click();
+        driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.LinearLayout[2]/android.view.ViewGroup/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText").sendKeys(PHONE_NUMBER);
+        driver.findElementById("kz.jysan.business.dev:id/button").click();
+
+        loadingWaitTimeout();
         driver.openNotifications();
 
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement copy_sms = (MobileElement) driver.findElementById("android:id/text");
-        String smsCode = copy_sms.getText();
-        System.out.println(smsCode);
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        loadingWaitTimeout();
+        String smsCode = driver.findElementById("android:id/text").getText();
+        loadingWaitTimeout();
         driver.navigate().back();
 
         driver.activateApp("kz.jysan.business.dev");
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        loadingWaitTimeout();
+
 
         List<MobileElement> keyPadButtons = driver.findElementById("kz.jysan.business.dev:id/pinKeyboard").findElements(By.className("android.widget.TextView"));
-        System.out.println("sms code " + smsCode);
-        for (int i = 0; i < smsCode.length(); i++) {
-            int keyPadIndex = (int)(smsCode.charAt(i) - '0');
-            int value = keyPadIndex;
-            if (keyPadIndex == 0) {
-                value = 9;
-            } else {
-                value--;
-            }
-            System.out.println("Pressing number: " + value);
+        for (char c : smsCode.toCharArray()) {
+            int keyPadIndex = c - '0';
+            int value = keyPadIndex == 0 ? 9 : keyPadIndex - 1;
             keyPadButtons.get(value).click();
         }
 
+        driver.findElementById("kz.jysan.business.dev:id/main_input");
+        driver.getKeyboard().sendKeys(PASSWORD);
+    }
 
-        MobileElement password = driver.findElementById("kz.jysan.business.dev:id/main_input");
-        driver.getKeyboard().sendKeys("Strong2024!");
-
-        MobileElement click_next = (MobileElement) driver.findElementById("kz.jysan.business.dev:id/button");
-        click_next.click();
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-
-        MobileElement keyCode = driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]");
-        keyCode.click();
-        keyCode.click();
-        keyCode.click();
-        keyCode.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-
-        MobileElement keyCodeRepeat = driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]");
-        keyCodeRepeat.click();
-        keyCodeRepeat.click();
-        keyCodeRepeat.click();
-        keyCodeRepeat.click();
-
-
-
-//requisets_card
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement company_change = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView");
-        company_change.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement company_check = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.widget.TextView");
-        company_check.click();
-
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        TouchAction swipeUp = new TouchAction(driver)
-                .press(PointOption.point(671,2423))
-                .waitAction(waitOptions(ofMillis(800)))
-                .moveTo(PointOption.point(671,525))
-                .release()
-                .perform();
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        TouchAction swipeUp2 = new TouchAction(driver)
-                .press(PointOption.point(671,2423))
-                .waitAction(waitOptions(ofMillis(800)))
-                .moveTo(PointOption.point(671,525))
-                .release()
-                .perform();
-
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement open_cardContainer = (MobileElement) driver.findElementById("kz.jysan.business.dev:id/group_cards_compose_view");
-        open_cardContainer.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement open_card = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[7]");
-        open_card.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement Requisites = (MobileElement) driver.findElementById("kz.jysan.business.dev:id/details");
-        Requisites.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement get_requisites = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[3]/android.widget.Switch");
-        get_requisites.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement get_account_requisites = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.view.View");
-        get_account_requisites.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement share_account_requisites = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[1]/android.widget.Button[2]");
-        share_account_requisites.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        driver.navigate().back();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        driver.navigate().back();
-//Chek_pin
-
-
-//Set_pin
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement card_settings = (MobileElement) driver.findElementById("kz.jysan.business.dev:id/settings");
+    private void setPinCode() {
+        loadingWaitTimeout();
+        MobileElement card_settings = driver.findElementById(CARD_SETTINGS);
         card_settings.click();
-
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        MobileElement set_pin = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[4]");
+        loadingWaitTimeout();
+        MobileElement set_pin = driver.findElementByXPath(SET_PIN_PATH);
         set_pin.click();
+        loadingWaitTimeout();
+    }
 
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    private void createPassCode() {
+        driver.findElementById("kz.jysan.business.dev:id/button").click();
+        loadingWaitTimeout();
+
+        MobileElement keyCode = driver.findElementByXPath(KEY_CODE);
+        keyCode.click();
+        keyCode.click();
+        keyCode.click();
+        keyCode.click();
+
+        loadingWaitTimeout();
+
+        MobileElement passCodeRepeat = driver.findElementByXPath(KEY_CODE_REPEAT);
+        passCodeRepeat.click();
+        passCodeRepeat.click();
+        passCodeRepeat.click();
+        passCodeRepeat.click();
 
     }
     @AfterMethod
     public void teardown() {
         driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);;
+    }
+
+    private void loadingWaitTimeout() {
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+    }
+
+    private void swipe() {
+        new TouchAction(driver)
+                .press(PointOption.point(671, 2423))
+                .waitAction(waitOptions(ofMillis(800)))
+                .moveTo(PointOption.point(671, 525))
+                .release()
+                .perform();
     }
 }
