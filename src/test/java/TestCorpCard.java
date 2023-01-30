@@ -5,6 +5,8 @@ import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -16,34 +18,48 @@ import java.util.concurrent.TimeUnit;
 
 import static io.appium.java_client.touch.WaitOptions.waitOptions;
 import static java.time.Duration.ofMillis;
+
+@PropertySource("classpath:application.properties")
 public class TestCorpCard {
-    public static final String CARD_SETTINGS = "kz.jysan.business.dev:id/settings";
-    private static final String SET_PIN_PATH = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[4]";
-    public static final String IIN = "970218050251";
-    public static final String PHONE_NUMBER = "7056375413";
-    public static final String INPUT_IIN = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText";
-    public static final String PASSWORD = "Strong2024!";
-    public static final String COMPANY_CHANGE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView";
-    public static final String CHOOSE_COMPANY = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.widget.TextView";
-    public static final String CARD_CONTAINER = "kz.jysan.business.dev:id/group_cards_compose_view";
-    public static final String OPEN_CARD = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[8]/android.widget.LinearLayout/android.widget.TextView[2]";
-    public static final String REQUITSITES = "kz.jysan.business.dev:id/details";
-    public static final String GET_REQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[3]/android.widget.Switch";
-    public static final String GET_ACCOUNT_RУQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.view.View";
-    public static final String SHARE_ACCOUNT_REQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[1]/android.widget.Button[2]";
-    public static final String KEY_CODE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]";
-    public static final String KEY_CODE_REPEAT = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]";
+
+    @Value("${password")
+    private String PASSWORD;
+    private final String IIN = "970218050251"; //вытащить в порперти файл
+    private final String PHONE_NUMBER = "7056375413"; //вытащить в порперти файл
+
+
+    private final String ID_BASE = "kz.jysan.business.dev:id";
+    public final String ID_CARD_SETTINGS = ID_BASE + "/settings";
+    public final String ID_REQUISITES = ID_BASE + "/details";
+    public final String ID_CARD_CONTAINER = ID_BASE + "/group_cards_compose_view";
+    public final String ID_INPUT_IIN = ID_BASE + "/et_iin";
+    public final String ID_FIELD_NUMBER = ID_BASE + "/et_phone";
+    public final String ID_CONTINUE_BUTTON = ID_BASE + "/button";
+
+
+
+    private final String XPATH_SET_PIN = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[4]";
+    public static final String XPATH_INPUT_IIN = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText";
+    public static final String XPATH_COMPANY_CHANGE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.TextView";
+    public static final String XPATH_CHOOSE_COMPANY = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.widget.TextView";
+    public static final String XPATH_OPEN_CARD = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/androidx.recyclerview.widget.RecyclerView/android.widget.RelativeLayout[8]/android.widget.LinearLayout/android.widget.TextView[2]";
+    public static final String XPATH_GET_REQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[3]/android.widget.Switch";
+    public static final String XPATH_GET_ACCOUNT_REQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[2]/android.view.View[2]/android.view.View";
+    public static final String XPATH_SHARE_ACCOUNT_REQUISITES = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/androidx.compose.ui.platform.ComposeView/android.view.View/android.view.View[1]/android.widget.Button[2]";
+    public static final String XPATH_KEY_CODE = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]";
+    public static final String XPATH_KEY_CODE_REPEAT = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.GridLayout/android.widget.TextView[5]";
+
 
     public AndroidDriver<MobileElement> driver;
     public WebDriverWait wait;
 
 
 
-    @BeforeMethod
+    @BeforeMethod // Вытащить в проперти
     public void setup() throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability("deviceName", "sdk_gphone64_x86_64");
-        caps.setCapability("udid", "emulator-5554"); //DeviceId from "adb devices" command
+        caps.setCapability("udid", "emulator-5554");
         caps.setCapability("platformName", "Android");
         caps.setCapability("platformVersion", "11.0");
         caps.setCapability  ("automationName", "UIAutomator2");
@@ -54,18 +70,26 @@ public class TestCorpCard {
     }
 
     @Test
-    public void CorpCardTest() {
+    public void corpCardTest() {
         firstAuthorizationWithSMS();
         createPassCode();
         showRequisites();
         setPinCode();
     }
 
+    private void clickByID(String id) {
+        driver.findElementById(id).click();
+    }
+
+    private void clickByXPATH(String xpath) {
+        driver.findElementByXPath(xpath).click();
+    }
+
     private void showRequisites() {
         loadingWaitTimeout();
-        driver.findElementByXPath(COMPANY_CHANGE).click();
+        clickByXPATH(XPATH_COMPANY_CHANGE);
         loadingWaitTimeout();
-        driver.findElementByXPath(CHOOSE_COMPANY).click();
+        clickByXPATH(XPATH_CHOOSE_COMPANY);
 
         for (int i = 0; i < 2; ++i) {
             loadingWaitTimeout();
@@ -73,24 +97,24 @@ public class TestCorpCard {
         }
 
         loadingWaitTimeout();
-        driver.findElementById(CARD_CONTAINER).click();
+        clickByID(ID_CARD_CONTAINER);
 
         swipe();
 
         loadingWaitTimeout();
-        driver.findElementByXPath(OPEN_CARD).click();
+        clickByXPATH(XPATH_OPEN_CARD);
 
         loadingWaitTimeout();
-        driver.findElementById(REQUITSITES).click();
+        clickByID(ID_REQUISITES);
 
         loadingWaitTimeout();
-        driver.findElementByXPath(GET_REQUISITES).click();
+        clickByXPATH(XPATH_GET_REQUISITES);
 
         loadingWaitTimeout();
-        driver.findElementByXPath(GET_ACCOUNT_RУQUISITES).click();
+        clickByXPATH(XPATH_GET_ACCOUNT_REQUISITES);
 
         loadingWaitTimeout();
-        driver.findElementByXPath(SHARE_ACCOUNT_REQUISITES).click();
+        clickByXPATH(XPATH_SHARE_ACCOUNT_REQUISITES);
 
         for (int i = 0; i < 2; ++i) {
             loadingWaitTimeout();
@@ -98,13 +122,15 @@ public class TestCorpCard {
         }
     }
 
+
+
     private void firstAuthorizationWithSMS() {
         loadingWaitTimeout();
-        driver.findElementById("kz.jysan.business.dev:id/et_iin").click();
-        driver.findElementByXPath(INPUT_IIN).sendKeys(IIN);
-        driver.findElementById("kz.jysan.business.dev:id/et_phone").click();
+        clickByID(ID_INPUT_IIN);
+        driver.findElementByXPath(XPATH_INPUT_IIN).sendKeys(IIN);
+        clickByID(ID_FIELD_NUMBER);
         driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.LinearLayout[2]/android.view.ViewGroup/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.EditText").sendKeys(PHONE_NUMBER);
-        driver.findElementById("kz.jysan.business.dev:id/button").click();
+        clickByID(ID_CONTINUE_BUTTON);
 
         loadingWaitTimeout();
         driver.openNotifications();
@@ -123,7 +149,7 @@ public class TestCorpCard {
             int keyPadIndex = c - '0';
             int value = keyPadIndex == 0 ? 9 : keyPadIndex - 1;
             keyPadButtons.get(value).click();
-        }
+        } // индексы с отпечатком
 
         driver.findElementById("kz.jysan.business.dev:id/main_input");
         driver.getKeyboard().sendKeys(PASSWORD);
@@ -131,11 +157,9 @@ public class TestCorpCard {
 
     private void setPinCode() {
         loadingWaitTimeout();
-        MobileElement card_settings = driver.findElementById(CARD_SETTINGS);
-        card_settings.click();
+        clickByID(ID_CARD_SETTINGS);
         loadingWaitTimeout();
-        MobileElement set_pin = driver.findElementByXPath(SET_PIN_PATH);
-        set_pin.click();
+        clickByXPATH(XPATH_SET_PIN);
         loadingWaitTimeout();
     }
 
@@ -143,7 +167,7 @@ public class TestCorpCard {
         driver.findElementById("kz.jysan.business.dev:id/button").click();
         loadingWaitTimeout();
 
-        MobileElement keyCode = driver.findElementByXPath(KEY_CODE);
+        MobileElement keyCode = driver.findElementByXPath(XPATH_KEY_CODE);
         keyCode.click();
         keyCode.click();
         keyCode.click();
@@ -151,7 +175,7 @@ public class TestCorpCard {
 
         loadingWaitTimeout();
 
-        MobileElement passCodeRepeat = driver.findElementByXPath(KEY_CODE_REPEAT);
+        MobileElement passCodeRepeat = driver.findElementByXPath(XPATH_KEY_CODE_REPEAT);
         passCodeRepeat.click();
         passCodeRepeat.click();
         passCodeRepeat.click();
@@ -160,7 +184,7 @@ public class TestCorpCard {
     }
     @AfterMethod
     public void teardown() {
-        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);;
+        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
     }
 
     private void loadingWaitTimeout() {
